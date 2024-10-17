@@ -1,0 +1,103 @@
+#include<iostream>
+using namespace std;
+
+class Magazin {
+public:
+	string oras;
+	int nrAngajati;
+	float suprafata;
+	const int anDeschidere;
+	static int impozitM2;// zona de memorie a clasei, pt spatiu, nu tine de obiect
+
+	Magazin():anDeschidere(2024)
+	{
+		this->oras = "Bucuresti";
+		this->nrAngajati = 2;
+		this ->suprafata = 80;
+
+	}
+	Magazin(string oras, int nrAngajati, float suprafata, int anDeschidere) :anDeschidere(anDeschidere)
+	{
+		this->oras = oras;
+		this->nrAngajati = nrAngajati;
+		this->suprafata = suprafata;
+
+	}
+
+	void afisare() {
+		cout << "Orasul:" << this->oras<<endl;
+		cout << "Nr angajati:" << this->nrAngajati<<endl;
+		cout << "Suprafata:" << this->suprafata<<endl;
+		cout << "An deschidere:" << this->anDeschidere<<endl;
+		cout << "Impozit pe m2:" << Magazin::impozitM2<<endl;
+	}
+
+	float calculeazaSuprafataMedie() {
+		if (this->nrAngajati != 0) {
+
+			return this->suprafata / this->nrAngajati;
+		}
+		else { return 0;
+		}
+	}
+
+	static void modificaImpozit(int impozit) {
+		if (impozit > 0) {
+
+			Magazin::impozitM2 = impozit;
+		}
+
+	}
+
+	static float calculeazaSupraftaTotala(Magazin* vector, int nrMagazine) {
+		float suma = 0;
+		for (int i = 0; i < nrMagazine; i++) {
+
+			suma += vector[i].suprafata;
+		}
+		return suma;
+	}
+
+
+};
+int Magazin::impozitM2 = 2;
+int main() {
+
+
+	
+	Magazin m1;
+	m1.afisare();
+	cout << endl;
+	Magazin m2("Tulcea", 11, 170, 2017);
+	m2.afisare();
+
+	cout << endl;
+
+	Magazin::modificaImpozit(3);
+	m1.modificaImpozit(4);
+	cout << endl;
+
+	Magazin* pointer = new Magazin("Ilfov", 5, 129, 2021);
+	pointer->afisare();
+	//-> -dereferentiere + afisare
+
+	//[]-index-deplasare+dereferentiere
+	cout << endl;
+	cout << "Suprafata medie pe angajat este de: " << pointer->calculeazaSuprafataMedie() << endl;
+
+	int nrMagazine = 3;
+	Magazin* vector = new Magazin[nrMagazine];
+	cout << "Vector\n";
+	for (int i = 0; i < nrMagazine; i++) {
+		//(*(vector + i)).afisare();
+		//(vector + i)->afisare();
+		vector[i].afisare();
+	}
+	cout << endl;
+
+	cout << "Suprafata totala:" << Magazin::calculeazaSupraftaTotala(vector, nrMagazine)<<endl;
+		return 0;
+
+
+
+}
