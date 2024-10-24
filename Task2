@@ -1,0 +1,227 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+//domeniu accesorii
+class Geanta {
+public:
+	string brand;
+	float dimensiune;
+	string material;
+	char* culoare;
+	static float pretMediu;
+	const float greutateMaxima;
+
+	//constructor fara parametrii
+	Geanta() :greutateMaxima(9.7) {
+		this->brand = "Guess";
+		this->dimensiune = 20.1;
+		this->material = "Piele";
+		this->culoare = new char[strlen("Negru") + 1];
+		strcpy_s(this->culoare, strlen("Negru") + 1, "Negru");
+
+	}
+	//constructor cu un parametru
+	Geanta(float dimensiune) :greutateMaxima(9.8) {
+		this->brand = "MK";
+		this->dimensiune = dimensiune;
+		this->material = "Piele";
+		this->culoare = new char[strlen("Roz") + 1];
+		strcpy_s(this->culoare, strlen("Roz") + 1, "Roz");
+
+	}
+	//constructor cu toti parametrii
+	Geanta(string brand, float dimensiune, string material,const char* culoare, float greutateMaxima) :greutateMaxima(greutateMaxima) {
+		this->brand = brand;
+		this->dimensiune = dimensiune;
+		this->material = material;
+		this->culoare = new char[strlen(culoare) + 1];
+		strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+	}
+	// Destructor
+	~Geanta() {
+		delete[]this->culoare;
+	}
+
+	void afisare() {
+		cout << "Brand: " << this->brand << endl;
+		cout << "Dimensiunea: " << this->dimensiune << endl;
+		cout << "Material: " << this->material << endl;
+		cout << "Culoare: " << this->culoare << endl;
+		cout << "Pret mediu: " << Geanta::pretMediu << endl;
+		cout << "Greutate maxima: " << this->greutateMaxima << endl;
+	}
+
+	// Functie statica
+	static void afisarePretMediu() {
+		cout << "Pretul mediu al gentilor: " << pretMediu << " lei" << endl;
+	}
+
+};
+     float Geanta::pretMediu = 300.0;  // Pretul mediu al gentilor
+
+
+
+     class Cercei {
+     public:
+         string material;
+         float diametru;
+         bool cuPietrePretioase;
+         char* culoare;
+         static int nrCercei;
+         const int nrCerceiPerPereche;
+
+         // Constructor fara parametrii
+         Cercei() : nrCerceiPerPereche(2) {
+            this->material = "Aur";
+             this->diametru = 2.5;
+             this->cuPietrePretioase = false;
+             this->culoare = new char[strlen("Rosii")+1];
+             strcpy_s(this->culoare,strlen("Rosii") + 1, "Rosii");
+            
+         }
+         //Constructor cu 3 param
+         Cercei(string material, float diametru, bool cuPietrePretioase) : nrCerceiPerPereche(2) {
+             this->material = material;
+             this->diametru = diametru;
+             this->cuPietrePretioase = cuPietrePretioase;
+             this->culoare = new char[strlen("Aurii") + 1];
+             strcpy_s(this->culoare, strlen("Aurii") + 1, "Aurii");
+
+         }
+         //Constructor cu param
+         Cercei(string material, float diametru, bool cuPietrePretioase, const char* culoare,int nrCerceiPerPereche) : nrCerceiPerPereche(nrCerceiPerPereche) {
+             this->material = material;
+             this->diametru = diametru;
+             this->cuPietrePretioase = cuPietrePretioase;
+             this->culoare = new char[strlen(culoare) + 1];
+             strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+         }
+
+
+         void afisare() {
+             cout << "Material: " << this->material << endl;
+             cout << "Diametru: " << this->diametru << endl;
+             cout << "Are pietre pretioase " << this->cuPietrePretioase << endl;
+             cout << "Culoare: " << this->culoare << endl;
+             cout << "Numar cercei: " << Cercei::nrCercei << endl;
+             cout << "Cercei per pereche: " << this->nrCerceiPerPereche << endl;
+         }
+         // Destructor
+         ~Cercei() {
+             delete[]this->culoare;
+         }
+
+         // Functie statica
+         static void afisareNrCercei() {
+             cout << "Numar total de cercei: " << nrCercei << endl;
+         }
+     };
+
+     int Cercei::nrCercei = 100;
+
+  
+
+     class Bratara {
+     public:
+         string material;
+         float lungime;
+         bool personalizata;
+         char* culoare;
+         static int nrBratari;
+         const int nrZale;
+
+         // Constructor fara param
+         Bratara() : nrZale(5) {
+            this-> material = "Argint";
+             this->lungime = 18.0;
+            this->personalizata = false;
+            this->culoare = new char[strlen("Aurgintiu") + 1];
+            strcpy_s(this->culoare, strlen("Aurgintiu") + 1, "Aurgintiu");
+         }
+         //Const cu 3 param
+         Bratara(string material, float lungime, bool personalizata) : nrZale(6) {
+             this->material = material;;
+             this->lungime = lungime;
+             this->personalizata = personalizata;
+             this->culoare = new char[strlen("Verde") + 1];
+             strcpy_s(this->culoare, strlen("Verde") + 1, "Verde");   
+           
+         }
+         //Cont cu param
+         Bratara(string material, float lungime, bool personalizata, const char* culoare, int nrZale) : nrZale(nrZale) {
+             this->material = material;
+             this->lungime = lungime;
+             this->personalizata = personalizata;
+             this->culoare = new char[strlen(culoare) + 1];
+             strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+         }
+
+         void afisare() {
+             cout << "Material: " << this->material << endl;
+             cout << "Lungime: " << this->lungime << endl;
+             cout << "Este personalizata " << this->personalizata << endl;
+             cout << "Culoare: " << this->culoare << endl;
+             cout << "Numar cercei: " << Bratara::nrBratari<< endl;
+             cout << "Numar zale bratara: " << this->nrZale << endl;
+         }
+         // Destructor
+         ~Bratara() {
+             delete[]this->culoare;
+         }
+
+         // Functie statica
+         static void afisareNrBratari() {
+             cout << "Numar total de bratari: " << nrBratari << endl;
+         }
+     };
+
+   
+     int Bratara::nrBratari = 60;
+
+
+	 int main() {
+         //Geanta
+		 Geanta g;
+		 g.afisare();
+         cout << endl;
+		 Geanta g1(3.5);
+		 g1.afisare();
+         cout << endl;
+		 Geanta g2("YSL", 5.8, "Piele", "Blue", 5.1);
+		 g2.afisare(); 
+         cout << endl;
+		 Geanta::afisarePretMediu();
+         cout << endl;
+
+         //Cercei
+         Cercei c1;
+         c1.afisare();
+         cout << endl;
+         Cercei c2("Argint", 3.0, true);
+         c2.afisare();
+         cout << endl;
+         Cercei c3("Aur alb", 2.0, false, "Alb",1);
+         c3.afisare();
+         cout << endl;
+         Cercei::afisareNrCercei();
+         cout << endl;
+
+         //Bratara
+         Bratara b1;
+         b1.afisare();
+         cout << endl;
+         Bratara b2("Piele", 20.0, true);
+         b2.afisare();
+         cout << endl;
+         Bratara b3("Otel inoxidabil", 19.0, false, "Negru",9);
+         b3.afisare();
+         cout << endl;
+
+         Bratara::afisareNrBratari();
+
+    
+
+		 return 0;
+
+	 }
