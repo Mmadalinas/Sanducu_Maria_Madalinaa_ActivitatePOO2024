@@ -1,0 +1,702 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Geanta {
+private:
+    string brand;
+    float dimensiune;
+    string material;
+    char* culoare;
+    static float pretMediu;
+    const float greutateMaxima;
+
+public:
+    Geanta() :greutateMaxima(9.7) {
+        this->brand = "Guess";
+        this->dimensiune = 20.1;
+        this->material = "Piele";
+        this->culoare = new char[strlen("Negru") + 1];
+        strcpy_s(this->culoare, strlen("Negru") + 1, "Negru");
+
+    }
+
+    Geanta(float dimensiune) :greutateMaxima(9.8) {
+        this->brand = "MK";
+        this->dimensiune = dimensiune;
+        this->material = "Piele";
+        this->culoare = new char[strlen("Roz") + 1];
+        strcpy_s(this->culoare, strlen("Roz") + 1, "Roz");
+
+    }
+
+    Geanta(string brand, float dimensiune, string material, const char* culoare, float greutateMaxima) :greutateMaxima(greutateMaxima) {
+        this->brand = brand;
+        this->dimensiune = dimensiune;
+        this->material = material;
+        this->culoare = new char[strlen(culoare) + 1];
+        strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+    }
+
+    ~Geanta() {
+        delete[]this->culoare;
+    }
+
+    Geanta(const Geanta& g) :greutateMaxima(g.greutateMaxima) {
+        this->brand = g.brand;
+        this->dimensiune = g.dimensiune;
+        this->material = g.material;
+        this->culoare = new char[strlen(g.culoare) + 1];
+        strcpy_s(this->culoare, strlen(g.culoare) + 1, g.culoare);
+    }
+    void afisare() {
+        cout << "Brand: " << this->brand << endl;
+        cout << "Dimensiunea: " << this->dimensiune << endl;
+        cout << "Material: " << this->material << endl;
+        cout << "Culoare: " << this->culoare << endl;
+        cout << "Pret mediu: " << Geanta::pretMediu << endl;
+        cout << "Greutate maxima: " << this->greutateMaxima << endl;
+    }
+
+
+    static void afisarePretMediu() {
+        cout << "Pretul mediu al gentilor: " << pretMediu << " lei" << endl;
+    }
+
+    string getBrand() {
+        return this->brand;
+    }
+
+    float getDimensiune() {
+        return this->dimensiune;
+    }
+
+    string getMaterial() {
+        return this->material;
+    }
+
+    const char* getCuloare() {
+        return this->culoare;
+    }
+
+    static float getPretMediu() {
+        return pretMediu;
+    }
+
+    void setBrand(string brand) {
+        this->brand = brand;
+    }
+
+    void setDimensiune(float dimensiune) {
+        this->dimensiune = dimensiune;
+    }
+    void setMaterial(string material) {
+        this->material = material;
+    }
+    void setCuloare(const char* culoare) {
+        delete[]this->culoare;
+        this->culoare = new char[strlen(culoare) + 1];
+        strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+    }
+    static void setPretMediu(float p) {
+        pretMediu = p;
+    }
+
+    friend float calculTotalPretGeanta(Geanta g[], int nrGenti);
+
+
+    Geanta operator=(const Geanta& g) {
+        if (&g != this) {
+            this->brand = g.brand;
+            this->dimensiune = g.dimensiune;
+            this->material = g.material;
+            delete[]this->culoare;
+            this->culoare = new char[strlen(g.culoare) + 1];
+            strcpy_s(this->culoare, strlen(g.culoare) + 1, g.culoare);
+        }
+        return  *this;
+    }
+
+    //1
+    bool operator==(const Geanta& g) const {
+        return (this->brand == g.brand) && (this->dimensiune == g.dimensiune) && (this->material == g.material) && (strcmp(this->culoare, g.culoare) == 0);
+    }
+
+    //2
+   
+    Geanta operator+(float addDimensiune) {
+        Geanta ds = *this;
+        ds.dimensiune += addDimensiune;
+        return ds;
+    }
+
+    //3
+    Geanta operator++(int) {
+        Geanta temp = *this;
+        this->dimensiune++;
+        return temp;
+    }
+
+    // 4
+    Geanta& operator++() {
+        this->dimensiune++;
+        return *this;
+    }
+
+    friend ostream& operator<<(ostream& out, Geanta g);
+   
+};
+float Geanta::pretMediu = 300.0;
+
+
+
+
+class Cercei {
+private:
+    string material;
+    float diametru;
+    bool cuPietrePretioase;
+    char* culoare;
+    static int nrCercei;
+    const int nrCerceiPerPereche;
+public:
+
+    Cercei() : nrCerceiPerPereche(2) {
+        this->material = "Aur";
+        this->diametru = 2.5;
+        this->cuPietrePretioase = false;
+        this->culoare = new char[strlen("Rosii") + 1];
+        strcpy_s(this->culoare, strlen("Rosii") + 1, "Rosii");
+
+    }
+
+    Cercei(string material, float diametru, bool cuPietrePretioase) : nrCerceiPerPereche(2) {
+        this->material = material;
+        this->diametru = diametru;
+        this->cuPietrePretioase = cuPietrePretioase;
+        this->culoare = new char[strlen("Aurii") + 1];
+        strcpy_s(this->culoare, strlen("Aurii") + 1, "Aurii");
+
+    }
+
+    Cercei(string material, float diametru, bool cuPietrePretioase, const char* culoare, int nrCerceiPerPereche) : nrCerceiPerPereche(nrCerceiPerPereche) {
+        this->material = material;
+        this->diametru = diametru;
+        this->cuPietrePretioase = cuPietrePretioase;
+        this->culoare = new char[strlen(culoare) + 1];
+        strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+    }
+
+    Cercei(const Cercei& c) : nrCerceiPerPereche(c.nrCerceiPerPereche) {
+        this->material = c.material;
+        this->diametru = c.diametru;
+        this->cuPietrePretioase = c.cuPietrePretioase;
+        this->culoare = new char[strlen(c.culoare) + 1];
+        strcpy_s(this->culoare, strlen(c.culoare) + 1, c.culoare);
+    }
+    void afisare() {
+        cout << "Material: " << this->material << endl;
+        cout << "Diametru: " << this->diametru << endl;
+        cout << "Are pietre pretioase " << this->cuPietrePretioase << endl;
+        cout << "Culoare: " << this->culoare << endl;
+        cout << "Numar cercei: " << Cercei::nrCercei << endl;
+        cout << "Cercei per pereche: " << this->nrCerceiPerPereche << endl;
+    }
+
+    ~Cercei() {
+        delete[]this->culoare;
+    }
+
+    string getMaterial() {
+        return this->material;
+    }
+
+    float getDiametru() {
+        return this->diametru;
+    }
+
+    bool getPietre() {
+        return this->cuPietrePretioase;
+    }
+
+    const char* getCuloare() {
+        return this->culoare;
+    }
+
+    static int getNrCercei() {
+        return nrCercei;
+    }
+
+    void setMaterial(string material) {
+        this->material = material;
+    }
+
+    void setDiametru(float diametru) {
+        this->diametru = diametru;
+    }
+    void setPietre(bool cuPietrePretioase) {
+        this->cuPietrePretioase = cuPietrePretioase;
+    }
+
+    void setCuloare(const char* culoare) {
+        delete[]this->culoare;
+        this->culoare = new char[strlen(culoare) + 1];
+        strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+
+    }
+
+    static void setNrCercei(int nr) {
+        nrCercei = nr;
+    }
+
+    static void afisareNrCercei() {
+        cout << "Numar total de cercei: " << nrCercei << endl;
+    }
+    friend void verificaPietrePretioaseCercei(Cercei c);
+
+    Cercei operator=(const Cercei& c) {
+        if (&c != this) {
+            this->material = c.material;
+            this->diametru = c.diametru;
+            this->cuPietrePretioase = c.cuPietrePretioase;
+            delete[]this->culoare;
+            this->culoare = new char[strlen(c.culoare) + 1];
+            strcpy_s(this->culoare, strlen(c.culoare) + 1, c.culoare);
+
+        }
+
+        return* this;
+    }
+
+    //1
+    Cercei operator*(float factor) {
+        Cercei temp = *this;
+        temp.diametru *= factor; 
+        return temp;
+    }
+
+    // 2
+    Cercei operator/(float divisor) {
+        Cercei temp = *this;
+        if (divisor != 0) {
+            temp.diametru /= divisor; 
+        }
+        else {
+            cout << "Impartirea la zero nu este permisa!" << endl;
+        }
+        return temp;
+    }
+    // 3
+    Cercei& operator++() {
+    this->diametru += 0.5; // Creste diametrul cu 0.5
+    return *this;
+    }
+
+    //4
+    Cercei operator++(int) {
+        Cercei temp = *this;
+        this->diametru += 0.5; // Creste diametrul cu 0.5
+        return temp;
+    }
+
+    friend ostream& operator<<(ostream& out, Cercei c);
+};
+
+int Cercei::nrCercei = 100;
+
+
+class Bratara {
+private:
+    string material;
+    float lungime;
+    bool personalizata;
+    char* culoare;
+    static int nrBratari;
+    const int nrZale;
+
+public:
+    Bratara() : nrZale(5) {
+        this->material = "Argint";
+        this->lungime = 18.0;
+        this->personalizata = false;
+        this->culoare = new char[strlen("Aurgintiu") + 1];
+        strcpy_s(this->culoare, strlen("Aurgintiu") + 1, "Aurgintiu");
+    }
+
+    Bratara(string material, float lungime, bool personalizata) : nrZale(6) {
+        this->material = material;;
+        this->lungime = lungime;
+        this->personalizata = personalizata;
+        this->culoare = new char[strlen("Verde") + 1];
+        strcpy_s(this->culoare, strlen("Verde") + 1, "Verde");
+
+    }
+
+    Bratara(string material, float lungime, bool personalizata, const char* culoare, int nrZale) : nrZale(nrZale) {
+        this->material = material;
+        this->lungime = lungime;
+        this->personalizata = personalizata;
+        this->culoare = new char[strlen(culoare) + 1];
+        strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+    }
+
+    Bratara(const Bratara& b) : nrZale(b.nrZale) {
+        this->material = b.material;
+        this->lungime = b.lungime;
+        this->personalizata = b.personalizata;
+        this->culoare = new char[strlen(b.culoare) + 1];
+        strcpy_s(this->culoare, strlen(b.culoare) + 1, b.culoare);
+    }
+
+    void afisare() {
+        cout << "Material: " << this->material << endl;
+        cout << "Lungime: " << this->lungime << endl;
+        cout << "Este personalizata " << this->personalizata << endl;
+        cout << "Culoare: " << this->culoare << endl;
+        cout << "Numar cercei: " << Bratara::nrBratari << endl;
+        cout << "Numar zale bratara: " << this->nrZale << endl;
+    }
+
+    ~Bratara() {
+        delete[]this->culoare;
+    }
+    string getMaterial() {
+        return this->material;
+    }
+
+    float getLungime() {
+        return this->lungime;
+    }
+
+    bool getPersonalizata() {
+        return this->personalizata;
+    }
+
+    const char* getCuloare() {
+        return this->culoare;
+    }
+
+    static int getNrBratari() {
+        return nrBratari;
+    }
+
+    void setMaterial(string material) {
+        this->material = material;
+    }
+
+    void setLungime(float lungime) {
+        this->lungime = lungime;
+    }
+    void setPersonalizata(bool personalizata) {
+        this->personalizata = personalizata;
+    }
+
+    void setCuloare(const char* culoare) {
+        delete[]this->culoare;
+        this->culoare = new char[strlen(culoare) + 1];
+        strcpy_s(this->culoare, strlen(culoare) + 1, culoare);
+
+    }
+
+    static void setNrBratari(int nr) {
+        nrBratari = nr;
+    }
+
+
+
+    static void afisareNrBratari() {
+        cout << "Numar total de bratari: " << nrBratari << endl;
+    }
+
+    Bratara operator=(const Bratara& b) {
+        if (&b != this) {
+
+            this->material = b.material;
+            this->lungime = b.lungime;
+            this->personalizata = b.personalizata;
+            delete[]this->culoare;
+            this->culoare = new char[strlen(b.culoare) + 1];
+            strcpy_s(this->culoare, strlen(b.culoare) + 1, b.culoare);
+
+        }
+        return *this;
+    }
+
+
+  
+    Bratara operator-(float valoare) {
+        Bratara t = *this;
+        t.lungime -= valoare; 
+        return t;
+    }
+
+   
+    bool operator==(const Bratara& b) {
+        return  this->lungime == b.lungime;
+    }
+
+    
+    char& operator[](int index) {
+        if (index >= 0 && index < strlen(this->culoare)) {
+            return this->culoare[index]; 
+        }
+        throw out_of_range("Indexul este in afacerea limitelor!");
+    }
+
+ 
+    Bratara operator+(const char* culoareNoua) {
+        Bratara t = *this;
+        int lungimeNoua = strlen(this->culoare) + strlen(culoareNoua) + 1;
+        char* culoareConcatenata = new char[lungimeNoua];
+        strcpy_s(culoareConcatenata, lungimeNoua, this->culoare);
+        strcat_s(culoareConcatenata, lungimeNoua, culoareNoua);
+
+        delete[] t.culoare;
+        t.culoare = culoareConcatenata;
+        return t;
+    }
+
+    friend ostream& operator<<(ostream& out, Bratara b);
+};
+
+
+int Bratara::nrBratari = 60;
+
+float calculTotalPretGeanta(Geanta g[], int nrGenti) {
+    float totalPret = 0;
+    for (int i = 0; i < nrGenti; i++) {
+        totalPret += g[i].getPretMediu();
+    }
+    return totalPret;
+}
+
+// Functia globala prietena care verifica daca cerceii au pietre pretioase
+void verificaPietrePretioaseCercei(Cercei c) {
+    if (c.cuPietrePretioase) {
+        cout << "Cerceii au pietre pretioase." << endl;
+    }
+    else {
+        cout << "Cerceii nu au pietre pretioase." << endl;
+    }
+}
+
+
+ostream& operator<<(ostream& out, Geanta g) {
+    out << "Brand: " << g.brand << endl;
+    out << "Dimensiune: " << g.dimensiune << endl;
+    out << "Material: " << g.material << endl;
+    out << "Culoare: " << g.culoare << endl;
+    return out;
+}
+
+
+ostream& operator<<(ostream& out, Cercei c) {
+    out << "Material: " << c.material << endl;
+    out << "Diametru: " << c.diametru << endl;
+    out << "Pietre pretioase: " << c.cuPietrePretioase << endl;
+    out << "Culoare: " << c.culoare << endl;
+    return out;
+
+}
+
+ostream& operator<<(ostream& out, Bratara b) {
+    out << "Material: " << b.material << endl;
+    out << "Lungime: " << b.lungime<< endl;
+    out << "Personalizata: " << b.personalizata << endl;
+    out << "Culoare: " << b.culoare << endl;
+    return out;
+}
+
+void main() {
+
+   ///* Geanta g;
+   // g.afisare();
+   // cout << endl;*/
+   //Geanta g1(3.5);
+   //   g1.afisare();
+   //   cout << endl;
+   //   Geanta g2("YSL", 5.8, "Piele", "Blue", 5.1);
+   //   g2.afisare(); 
+   //   cout << endl;
+   //   Geanta::afisarePretMediu();
+   //   cout << endl;
+   //   Geanta g3 = g;
+   //   g3.afisare();
+   //   cout << endl;
+   // 
+
+   //   cout << "Brand initial: " << g.getBrand() << endl;
+   //   g.setBrand("New Brand");
+   //   cout << "Brand modificat: " << g.getBrand() << endl;
+
+   //   cout << "Dimensiune initiala: " << g.getDimensiune() << endl;
+   //   g.setDimensiune(25.5);
+   //   cout << "Dimensiune modificata: " << g.getDimensiune() << endl;
+
+   //   cout << "Material initial: " << g.getMaterial() << endl;
+   //   g.setMaterial("Textil");
+   //   cout << "Material modificat: " << g.getMaterial() << endl;
+
+   //   cout << "Culoare initiala: " << g.getCuloare() << endl;
+   //   g.setCuloare("Albastru");
+   //   cout << "Culoare modificata: " << g.getCuloare() << endl;
+
+   //   Geanta::afisarePretMediu();
+   //   Geanta::setPretMediu(350.0);
+   //   Geanta::afisarePretMediu();
+   //   cout << endl;
+   // 
+
+   // 
+   //   Cercei c1;
+   //   c1.afisare();
+   //  /* cout << endl;
+   //   Cercei c2("Argint", 3.0, true);
+   //   c2.afisare();
+   //   cout << endl;
+   //   Cercei c3("Aur alb", 2.0, false, "Alb",1);
+   //   c3.afisare();
+   //   cout << endl;
+   //   Cercei::afisareNrCercei();
+   //   cout << endl;
+   //   Cercei c4 = c1;
+   //   c4.afisare();
+   //   cout << endl;*/
+   //  
+   //  
+
+   //   cout << "Material initial: " << c1.getMaterial() << endl;
+   //   c1.setMaterial("Platina");
+   //   cout << "Material modificat: " << c1.getMaterial() << endl;
+
+   //   cout << "Diametru initial: " << c1.getDiametru() << endl;
+   //   c1.setDiametru(3.5);
+   //   cout << "Diametru modificat: " << c1.getDiametru() << endl;
+
+   //   cout << "Are pietre pretioase (initial): " << c1.getPietre() << endl;
+   //   c1.setPietre(true);
+   //   cout << "Are pietre pretioase (modificat): " << c1.getPietre() << endl;
+
+   //   cout << "Culoare initiala: " << c1.getCuloare() << endl;
+   //   c1.setCuloare("Verde");
+   //   cout << "Culoare modificata: " << c1.getCuloare() << endl;
+
+   //   Cercei::afisareNrCercei();
+   //   Cercei::setNrCercei(120);
+   //   Cercei::afisareNrCercei();
+   //   cout << endl;
+
+   // 
+   //   Bratara b1;
+   //   b1.afisare();
+   //  /* cout << endl;
+   //   Bratara b2("Piele", 20.0, true);
+   //   b2.afisare();
+   //   cout << endl;
+   //   Bratara b3("Otel inoxidabil", 19.0, false, "Negru",9);
+   //   b3.afisare();
+   //   cout << endl;
+   //   Bratara::afisareNrBratari();
+   //   Bratara b4 = b2;
+   //   b4.afisare();
+   //   cout << endl;*/
+   //
+
+   //   cout << "Material initial: " << b1.getMaterial() << endl;
+   //   b1.setMaterial("Otel");
+   //   cout << "Material modificat: " << b1.getMaterial() << endl;
+
+   //   cout << "Lungime initiala: " << b1.getLungime() << endl;
+   //   b1.setLungime(22.0);
+   //   cout << "Lungime modificata: " << b1.getLungime() << endl;
+
+   //   cout << "Este personalizata (initial): " << b1.getPersonalizata() << endl;
+   //   b1.setPersonalizata(true);
+   //   cout << "Este personalizata (modificat): " << b1.getPersonalizata() << endl;
+
+   //   cout << "Culoare initiala: " << b1.getCuloare() << endl;
+   //   b1.setCuloare("Negru");
+
+   //   Bratara::afisareNrBratari();
+   //   Bratara::setNrBratari(120);
+   //   Bratara::afisareNrBratari();
+   //   cout << endl;
+
+   ///* Geanta g1("Louis Vuitton", 25.5, "Piele", "Negru", 10.0);
+   // Geanta g2("Chanel", 18.5, "Material sintetic", "Albastru", 8.5);
+   // Geanta genti[] = { g1, g2 };
+
+
+   // float totalPret = calculTotalPretGeanta(genti, 2);
+   // cout << "Total pret genti: " << totalPret << " lei" << endl;
+
+
+   // Cercei c1;
+   // verificaPietrePretioaseCercei(c1);
+
+
+   // Cercei c2("Aur alb", 2.0, true);
+   // verificaPietrePretioaseCercei(c2);*/
+
+Geanta g1;
+cout<<g1;
+cout << endl;
+Geanta g2("Louis Vuitton", 25.5, "Piele", "Negru", 10.0);
+cout << g2;
+cout << endl;
+Geanta g3;
+g3 = g2;
+cout << g3;
+cout << endl;
+if (g1 == g2) {
+    cout << "Genti egale!" << endl;
+}
+else {
+    cout << "Genti diferite!" << endl;
+}
+cout << endl;
+g3++;
+++g3;
+cout << g3;
+cout << endl;
+Geanta g4 = g2 + 5;
+cout << g4;
+cout << "CLASA CERCEI";
+Cercei c1("Aur", 2.5, true);
+Cercei c2("Argint", 3.0, false);
+cout << endl;
+++c1;
+cout << "Cercei c1 dupa pre-increment: "<<c1<<endl;
+cout << endl;
+c2++;
+cout << "Cercei c2 dupa post-increment: "<<c2<<endl;
+ cout << endl;
+Cercei c3 = c1 * 2;
+cout << "Cercei c3 dupa multiplicare: " <<c3<< endl;
+cout << endl;
+Cercei c4 = c2 / 2;
+cout << "Cercei c4 dupa diviziune: " <<c4<< endl;
+Bratara b1("Platina", 6.0, true);
+Bratara b2("Aur", 5.5, false);
+cout << "Clasa BRATARA";
+cout << endl;
+Bratara b3 = b1 - 0.5;
+cout << "Bratara b3 dupa substractie: "<< b3 << endl;
+if (b1 == b2) {
+    cout << "Bratarile sunt identice!" << endl;
+}
+else {
+    cout << "Bratarile sunt diferite!" << endl;
+}
+try {
+    b1[0] = 'A';
+    cout << "Bratara b1 dupa schimbarea culorii: " << b1 << endl;
+}
+catch (const out_of_range& e) {
+    cout << e.what() << endl;
+}
+Bratara b4 = b1 + " Cu Perle";
+cout << "Bratara b4 dupa concatenare: " << b4 << endl;
+
+}
