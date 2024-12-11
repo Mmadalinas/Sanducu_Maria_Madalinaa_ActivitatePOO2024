@@ -289,14 +289,14 @@ public:
     }
     // 3
     Cercei& operator++() {
-    this->diametru += 0.5; // Creste diametrul cu 0.5
+    this->diametru += 0.5; 
     return *this;
     }
 
     //4
     Cercei operator++(int) {
         Cercei temp = *this;
-        this->diametru += 0.5; // Creste diametrul cu 0.5
+        this->diametru += 0.5;
         return temp;
     }
 
@@ -471,7 +471,7 @@ float calculTotalPretGeanta(Geanta g[], int nrGenti) {
     return totalPret;
 }
 
-// Functia globala prietena care verifica daca cerceii au pietre pretioase
+
 void verificaPietrePretioaseCercei(Cercei c) {
     if (c.cuPietrePretioase) {
         cout << "Cerceii au pietre pretioase." << endl;
